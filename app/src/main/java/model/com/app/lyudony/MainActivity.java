@@ -2,8 +2,13 @@ package model.com.app.lyudony;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,6 +27,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.lyudony.clockview.widgets.TimeDiskView;
+
+import java.util.List;
 
 /**
  * 主入口 启动服务
@@ -68,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
         final Button btnStarTime = findViewById(R.id.btn_star_time);//设置开始时间
         final Button btnEndTime = findViewById(R.id.btn_end_time);//设置结束时间
 
+        final Button btnOnOff = findViewById(R.id.btn_onOff);
+
         //实例化SharedPreferences对象（第一步）
         mySharedPreferences = getSharedPreferences("shared", Activity.MODE_PRIVATE);
         //实例化SharedPreferences.Editor对象（第二步）
@@ -77,12 +86,12 @@ public class MainActivity extends AppCompatActivity {
         String endTime = mySharedPreferences.getString("endTime", "");
 
         if (starTime.length() > 0) {
-            btnStarTime.setText("上班打卡 " + starTime);
+            btnStarTime.setText("begin " + starTime);
         } else {
             btnStarTime.setText("设置上班打卡时间");
         }
         if (endTime.length() > 0) {
-            btnEndTime.setText("下班打卡 " + endTime);
+            btnEndTime.setText("end " + endTime);
         } else {
             btnEndTime.setText("设置下班打卡时间");
         }
@@ -95,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void setTime(String hour, String minute) {
-                        btnStarTime.setText("上班打卡 " + hour + minute);
+                        btnStarTime.setText("begin " + hour + minute);
                         //用putString的方法保存数据
                         editor.putString("startTime", hour + minute);
                         //提交当前数据
@@ -113,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void setTime(String hour, String minute) {
-                        btnEndTime.setText("下班打卡 " + hour + minute);
+                        btnEndTime.setText("end " + hour + minute);
                         //用putString的方法保存数据
                         editor.putString("endTime", hour + minute);
                         //提交当前数据
@@ -123,6 +132,56 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnOnOff.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onClick(View view) {
+                if ("ON".equals(btnOnOff.getText().toString())) {
+                    btnOnOff.setText(R.string.off);
+                    btnOnOff.setTextColor(getResources().getColor(R.color.color_off));
+                    Toast.makeText(getApplicationContext(), "已关闭", Toast.LENGTH_SHORT).show();
+                } else {
+                    btnOnOff.setText(R.string.on);
+                    btnOnOff.setTextColor(getResources().getColor(R.color.color_on));
+                    Toast.makeText(getApplicationContext(), "已打开", Toast.LENGTH_SHORT).show();
+                }
+                try {
+                    PackageManager packageManager = getPackageManager();
+                    PackageInfo packageInfo = null;
+
+                    packageInfo = packageManager.getPackageInfo("com.tencent.wework", 0);
+
+                    //设置意图
+                    Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
+                    resolveIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+                    if (packageInfo != null) {
+                        resolveIntent.setPackage(packageInfo.packageName);
+                    }
+                    List<ResolveInfo> apps = packageManager.queryIntentActivities(resolveIntent, 0);
+                    ResolveInfo resolveInfo = apps.iterator().next();
+                    if (resolveInfo != null && packageInfo != null) {
+                        String className = resolveInfo.activityInfo.name;
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        Log.e(TAG, "packageName ------------" + packageInfo.packageName);
+                        ComponentName cn = new ComponentName(packageInfo.packageName, className);
+                        intent.setComponent(cn);
+                        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
+                        try {
+                            pendingIntent.send();
+                        } catch (PendingIntent.CanceledException e) {
+                            e.printStackTrace();
+                            Log.e(TAG, "PendingIntent error --------" + e.getMessage());
+                        }
+
+                    }
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
 
     }
 

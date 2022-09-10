@@ -125,8 +125,8 @@ public class AutomaticTaskService extends Service {
             //通过音乐播放器的模式 只要在播放状态下，就算休眠也不会被杀
             bgMediaPlayer = MediaPlayer.create(this, R.raw.silent);
             //设置循环播放
-            bgMediaPlayer.setLooping(true);
-            bgMediaPlayer.start();
+            //bgMediaPlayer.setLooping(true);
+            //bgMediaPlayer.start();
         }
 
         //走OnDestory停止的服务，系统保留了service的onStartCommand方法中的变量，等待系统重启此服务

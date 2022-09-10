@@ -4,7 +4,13 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/AutomaticTask.iml" filepath="$PROJECT_DIR$/.idea/modules/AutomaticTask.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/AutomaticTask.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/AutomaticTask.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/AutomaticTask.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/AutomaticTask.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/AutomaticTask.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/AutomaticTask.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/AutomaticTask.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/AutomaticTask.app.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/clockview/AutomaticTask.clockview.iml" filepath="$PROJECT_DIR$/.idea/modules/clockview/AutomaticTask.clockview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/clockview/AutomaticTask.clockview.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/clockview/AutomaticTask.clockview.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/clockview/AutomaticTask.clockview.main.iml" filepath="$PROJECT_DIR$/.idea/modules/clockview/AutomaticTask.clockview.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/clockview/AutomaticTask.clockview.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/clockview/AutomaticTask.clockview.unitTest.iml" />
     </modules>
   </component>
 </project>
